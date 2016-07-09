@@ -4,16 +4,24 @@
     <meta charset="UTF-8">
     <title>timeline</title>
     <script src="/static/jquery-3.0.0.min.js"></script>
+    <script src="/static/jquery.tmpl.min.js"></script>
+    <script id="id-template-tweet" type="text/x-jquery-tmpl">
+         <p>
+            ${ content } : ${ created_time }
+            <a href="tweet/update/${ id }">编辑</a>
+            <button class="button-delete" data-id="${ id }" >删除</button>
+         </p>
+    </script>
     <script>
         var bindDeleteAction = function() {
-            $('.button-delete').on('click', function () {
+            $('body').on('click', '.button-delete', function () {
                 var self = $(this);
                 var tweet_id = this.dataset.id;
                 var tweet_name = this.dataset.name;
                 console.log('tid', tweet_id);
                 console.log('tname', tweet_name);
 
-                var requset = {
+                var request = {
                     url: '/tweet/delete/' + tweet_id,
                     type: 'get',
                     contentType: 'application/json',
@@ -27,7 +35,7 @@
                         console.log(r);
                     }
                 };
-                $.ajax(requset);
+                $.ajax(request);
             });
         };
 
@@ -51,8 +59,8 @@
                     success: function (r) {
                         console.log(r);
                         if (r.success) {
-{#                            self.parent().remove();#}
-                            console.log(r);
+                            console.log('add success', r);
+                            $('#id-template-tweet').tmpl(r.data).insertAfter('#id-button-add')
                         }
                     },
                     error: function () {
@@ -76,21 +84,15 @@
         粉丝：0
         <a href="/timeline/{{ user.username }}">我的微博</a>
     </P>
-{#    <form action="/weibo/add/{{user.username}}" method="POST">#}
         <textarea id="id-input-content" name="content" placeholder="写点东西"></textarea>
         <br>
         <button id="id-button-add">添加微博</button>
-{#    </form>#}
     {% for t in all_tweets %}
     <p>
-{#        <a href="/timeline/{{ t.user.username }}">{{ t.user.username }}</a>：#}
         {{ t.content }} : {{ t.created_time }}
         <a href="tweet/update/{{ t.id }}">编辑</a>
         <button class="button-delete" data-id="{{ t.id }}" data-name="gua">删除</button>
     </p>
-{#    <a href="/timeline/comments/{{ t.id }}">评论({{ t.comments|length }})</a>#}
     {% endfor %}
-{#    <hr>#}
-{#    <a href="/tweet/add/{{ user.username }}">返回首页</a>#}
 </body>
 </html>

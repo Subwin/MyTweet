@@ -81,7 +81,7 @@ def register():
     return jsonify(r)
 
 
-@app.route('/weibo/add/<username>')
+@app.route('/tweet/add/<username>')
 def tweet_add_view(username):
     data_u = User.query.filter_by(username=username).first()
     cur_u = current_user()
@@ -92,6 +92,7 @@ def tweet_add_view(username):
     else:
         all_tweets = Tweet.query.all()
         all_tweets.sort(key=lambda t: t.created_time, reverse=True)
+        # print(all_tweets[0].created_time)
         return render_template('myTweet.html', user=data_u, all_tweets=all_tweets)
 
 
@@ -105,12 +106,10 @@ def tweet_add():
         t = Tweet(form)
         t.user = user
         t.save()
-        j = t.json()
-        print('j', j)
         r = {
             'success': True,
             'message': '添加成功',
-            'data': t.json
+            'data': t.json()
         }
         return jsonify(r)
 
