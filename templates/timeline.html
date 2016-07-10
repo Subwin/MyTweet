@@ -2,30 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>todo list add</title>
+    <title>timeline</title>
+    <script src="/static/jquery-3.0.0.min.js"></script>
+    <script src="/static/jquery.tmpl.min.js"></script>
+    <script id="id-template-tweet" type="text/x-jquery-tmpl">
+         <p>
+            ${ content } : ${ created_time }
+{#            <a href="tweet/update/${ id }">编辑</a>#}
+{#            <button class="button-delete" data-id="${ id }" >删除</button>#}
+         </p>
+    </script>
+    <script>
+        var bindAddTweetAction = function () {
+            $('#id-button-add').on('click', function () {
+                var self = $(this);
+                var content = $('#id-input-content').val();
+                var form = {
+                    'content': content
+                };
+                console.log('form', form);
+
+                var data = JSON.stringify(form);
+                console.log('data', data);
+                var request = {
+                    url: '/timeline',
+                    type: 'post',
+                    data: data,
+                    contentType: 'application/json',
+                    success: function (r) {
+                        console.log(r);
+                        if (r.success) {
+                            console.log('add success', r);
+                            $('#id-template-tweet').tmpl(r.data).insertAfter('#id-tweet-title');
+                            $('#id-input-content').val("");
+                        }
+                    },
+                    error: function () {
+                        console.log(r);
+                    }
+                };
+                $.ajax(request);
+            });
+        };
+
+        $(document).ready(function(){
+{#            bindDeleteAction();#}
+            bindAddTweetAction();
+        });
+    </script>
 </head>
 <body>
     <P>
         您的用户名：{{ user.username }}
         关注用户：0
         粉丝：0
-        <a href="/timeline/{{ user.username }}">我的微博</a>
+        <a href="/mytweet/{{ user.username }}">我的微博</a>
     </P>
-    <form action="/todo/add/{{user.username}}" method="POST">
-        <textarea name="content" placeholder="写点东西"></textarea>
+        <textarea id="id-input-content" name="content" placeholder="写点东西"></textarea>
         <br>
-        <button type="submit">添加微博</button>
-    </form>
-    <h3>所有微博</h3>
-    {% for t in all_todo_list %}
+        <button id="id-button-add">添加微博</button>
+    <h3 id="id-tweet-title">所有微博</h3>
+    {% for t in all_tweets %}
     <p>
-        <br>
-        <a href="/timeline/{{ t.user.username }}">{{ t.user.username }}</a>
+{#        <a href="/timeline/{{ t.user.username }}">{{ t.user.username }}</a>:#}
+        {{ t.user.username }}
         {{ t.content }}
         {{ t.created_time }}
     </p>
-    <a href="/timeline/comments/{{ t.id }}">评论({{ t.comments|length }})</a>
-    <!--{{ t.comments|length }} 就是求对象的长度，等价于python中len(t.comments)-->
+{#    <a href="/timeline/comments/{{ t.id }}">评论({{ t.comments|length }})</a>#}
+{#    <!--{{ t.comments|length }} 就是求对象的长度，等价于python中len(t.comments)-->#}
     {% endfor %}
 </body>
 </html>
