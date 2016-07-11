@@ -47,6 +47,7 @@ class User(db.Model, ReprMixin, Update):
     created_time = db.Column(db.DateTime(timezone=True), default=sql.func.now())
     # 这是引用别的表的数据的属性，表明了它关联的东西
     tweets = db.relationship('Tweet', backref='user')
+    comments = db.relationship('Comment', backref='user')
 
     def __init__(self, form):
         super(User, self).__init__()

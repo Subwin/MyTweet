@@ -16,11 +16,11 @@
     <h3 id="id-tweet-title">{{ user.username }}的所有微博</h3>
     {% for t in all_tweets %}
     <p>
-        <a href="/{{ t.user.username }}">{{ t.user.username }}</a>::
+        <a href="/{{ t.user.username }}">{{ t.user.username }}</a>:
         {{ t.content }}
         {{ t.created_time }}
     </p>
-{#    <a href="/timeline/comments/{{ t.id }}">评论({{ t.comments|length }})</a>#}
+    <a href="/tweet/comments/{{ t.id }}">评论({{ t.comments|length }})</a>
 {#    <!--{{ t.comments|length }} 就是求对象的长度，等价于python中len(t.comments)-->#}
     {% endfor %}
 </body>

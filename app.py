@@ -80,6 +80,15 @@ def register():
     return jsonify(r)
 
 
+@app.route('/<username>')
+def other_user_view(username):
+    user = User.query.filter_by(username=username).first()
+    view_user = current_user()
+    all_tweets = user.tweets
+    all_tweets.sort(key=lambda t: t.created_time, reverse=True)
+    return render_template('other.html', user=user, view_user = view_user, all_tweets=all_tweets)
+
+
 @app.route('/timeline/<username>')
 def timeline(username):
     data_u = User.query.filter_by(username=username).first()
@@ -173,13 +182,12 @@ def tweet_delete(tweet_id):
         return jsonify(r)
 
 
-@app.route('/<username>')
-def other_user_view(username):
-    user = User.query.filter_by(username=username).first()
+@app.route('/tweet/comments/<tweet_id>')
+def comments_view(tweet_id):
     view_user = current_user()
-    all_tweets = user.tweets
-    all_tweets.sort(key=lambda t: t.created_time, reverse=True)
-    return render_template('other.html', user=user, view_user = view_user, all_tweets=all_tweets)
+    one_tweet = Tweet.query.filter_by(id=tweet_id).first()
+    user = one_tweet.user
+    return render_template('comments.html', user=user, view_user = view_user, one_tweet=one_tweet)
 
 
 if __name__ == '__main__':
