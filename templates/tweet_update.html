@@ -9,7 +9,8 @@
         您的用户名：{{ user.username }}
         关注用户：0
         粉丝：0
-        <a href="/timeline/{{ user.username }}">我的微博</a>
+        <a href="/mytweet/{{ user.username }}">我的微博</a>
+        <a href="{{ url_for('timeline',username=user.username) }}">返回首页</a>
     </P>
     <form action="/tweet/update/{{ tweet.id }}" method="POST">
         <input name="content" placeholder="{{ tweet.content }}"/>

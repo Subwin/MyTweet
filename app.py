@@ -122,45 +122,38 @@ def mytweet_view(username):
     elif data_u != cur_u:
         abort(401)
     else:
-        t_user = current_user()
-        all_tweets = t_user.tweets
-        # all_tweets = Tweet.query.filter_by(username=username)
+        all_tweets = cur_u.tweets
         all_tweets.sort(key=lambda t: t.created_time, reverse=True)
         return render_template('mytweet.html', user=data_u, all_tweets=all_tweets)
 
 
-# @app.route('/mytweet', methods=['POST'])
-# def mytweet():
-#     user = current_user()
-#     if user is None:
-#         return redirect(url_for('login_view'))
-#     else:
-#         form = request.get_json()
-#         t = Tweet(form)
-#         t.user = user
-#         t.save()
-#         r = {
-#             'success': True,
-#             'message': '添加成功',
-#             'data': t.json()
-#         }
-#         return jsonify(r)
-# 两个页面留言板视图函数一样，如何简化？
+@app.route('/tweet/update/<tweet_id>')
+def tweet_update_view(tweet_id):
+    one_tweet = Tweet.query.filter_by(id=tweet_id).first()
+    data_u = one_tweet.user
+    cur_u = current_user()
+    if data_u is None:
+        abort(404)
+    elif data_u != cur_u:
+        abort(401)
+    else:
+        return render_template('tweet_update.html', tweet=one_tweet, user=current_user())
 
-# @app.route('/tweet/update/<tweet_id>')
-# def tweet_update_view(tweet_id):
-#     one_tweet = Tweet.query.filter_by(id=tweet_id).first()
-#     return render_template('tweet_update.html', tweet=one_tweet, user=current_user())
-#
-#
-# @app.route('/tweet/update/<tweet_id>', methods=['POST'])
-# def todo_update(tweet_id):
-#     form = request.form
-#     one_todo = Tweet.query.filter_by(id=tweet_id).first()
-#     user = one_todo.user
-#     one_todo.update(form)
-#     one_todo.save()
-#     return redirect(url_for('tweet_add_view', username=user.username))
+
+@app.route('/tweet/update/<tweet_id>', methods=['POST'])
+def tweet_update(tweet_id):
+    one_tweet = Tweet.query.filter_by(id=tweet_id).first()
+    user = one_tweet.user
+    cur_u = current_user()
+    if user is None:
+        abort(404)
+    elif user != cur_u:
+        abort(401)
+    else:
+        form = request.form
+        one_tweet.update(form)
+        one_tweet.save()
+        return redirect(url_for('mytweet_view', username=user.username))
 
 
 @app.route('/tweet/delete/<tweet_id>')
