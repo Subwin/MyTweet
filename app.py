@@ -95,7 +95,8 @@ def timeline(username):
 
 
 @app.route('/timeline', methods=['POST'])
-def timeline_add():
+@app.route('/mytweet', methods=['POST'])
+def tweet_add():
     user = current_user()
     if user is None:
         return redirect(url_for('login_view'))
@@ -128,22 +129,22 @@ def mytweet_view(username):
         return render_template('mytweet.html', user=data_u, all_tweets=all_tweets)
 
 
-@app.route('/mytweet', methods=['POST'])
-def mytweet():
-    user = current_user()
-    if user is None:
-        return redirect(url_for('login_view'))
-    else:
-        form = request.get_json()
-        t = Tweet(form)
-        t.user = user
-        t.save()
-        r = {
-            'success': True,
-            'message': '添加成功',
-            'data': t.json()
-        }
-        return jsonify(r)
+# @app.route('/mytweet', methods=['POST'])
+# def mytweet():
+#     user = current_user()
+#     if user is None:
+#         return redirect(url_for('login_view'))
+#     else:
+#         form = request.get_json()
+#         t = Tweet(form)
+#         t.user = user
+#         t.save()
+#         r = {
+#             'success': True,
+#             'message': '添加成功',
+#             'data': t.json()
+#         }
+#         return jsonify(r)
 # 两个页面留言板视图函数一样，如何简化？
 
 # @app.route('/tweet/update/<tweet_id>')
