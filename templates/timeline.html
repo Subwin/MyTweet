@@ -63,8 +63,8 @@
     <h3 id="id-tweet-title">所有微博</h3>
     {% for t in all_tweets %}
     <p>
-{#        <a href="/timeline/{{ t.user.username }}">{{ t.user.username }}</a>:#}
-        {{ t.user.username }}
+        <a href="/{{ t.user.username }}">{{ t.user.username }}</a>:
+{#        {{ t.user.username }}#}
         {{ t.content }}
         {{ t.created_time }}
     </p>

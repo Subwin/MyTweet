@@ -173,6 +173,15 @@ def tweet_delete(tweet_id):
         return jsonify(r)
 
 
+@app.route('/<username>')
+def other_user_view(username):
+    user = User.query.filter_by(username=username).first()
+    view_user = current_user()
+    all_tweets = user.tweets
+    all_tweets.sort(key=lambda t: t.created_time, reverse=True)
+    return render_template('other.html', user=user, view_user = view_user, all_tweets=all_tweets)
+
+
 if __name__ == '__main__':
     config = {
         'debug': True,

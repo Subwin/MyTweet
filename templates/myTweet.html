@@ -52,7 +52,7 @@
                 var data = JSON.stringify(form);
                 console.log('data', data);
                 var request = {
-                    url: '/tweet/add',
+                    url: '/mytweet',
                     type: 'post',
                     data: data,
                     contentType: 'application/json',
@@ -83,6 +83,7 @@
         关注用户：0
         粉丝：0
         <a href="/mytweet/{{ user.username }}">我的微博</a>
+        <a href="{{ url_for('timeline',username=user.username) }}">返回首页</a>
     </P>
         <textarea id="id-input-content" name="content" placeholder="写点东西"></textarea>
         <br>
@@ -90,8 +91,9 @@
     {% for t in all_tweets %}
     <p>
         {{ t.content }} : {{ t.created_time }}
-        <a href="tweet/update/{{ t.id }}">编辑</a>
-        <button class="button-delete" data-id="{{ t.id }}" data-name="gua">删除</button>
+{#        <a href="{{url_for('tweet_update_view', tweet_id=t.id)}}">编辑</a>#}
+        <a href="/tweet/update/{{t.id}}">编辑</a>
+        <button class="button-delete" data-id="{{ t.id }}">删除</button>
     </p>
     {% endfor %}
 </body>

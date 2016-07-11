@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ user.username }}</title>
+</head>
+<body>
+    <P>
+        您的用户名：{{ view_user.username }}
+        关注用户：0
+        粉丝：0
+        <a href="/mytweet/{{ view_user.username }}">我的微博</a>
+        <a href="{{ url_for('timeline',username=view_user.username) }}">返回首页</a>
+    </P>
+
+    <h3 id="id-tweet-title">{{ user.username }}的所有微博</h3>
+    {% for t in all_tweets %}
+    <p>
+        <a href="/{{ t.user.username }}">{{ t.user.username }}</a>::
+        {{ t.content }}
+        {{ t.created_time }}
+    </p>
+{#    <a href="/timeline/comments/{{ t.id }}">评论({{ t.comments|length }})</a>#}
+{#    <!--{{ t.comments|length }} 就是求对象的长度，等价于python中len(t.comments)-->#}
+    {% endfor %}
+</body>
+</html>
