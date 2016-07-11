@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>comments</title>
-        <script src="/static/jquery-3.0.0.min.js"></script>
+    <script src="/static/jquery-3.0.0.min.js"></script>
     <script src="/static/jquery.tmpl.min.js"></script>
+    <script src="/static/weibo.js"></script>
+    <script src="/static/action.js"></script>
     <script id="id-template-tweet" type="text/x-jquery-tmpl">
          <p>
             ${ content }
@@ -12,41 +14,8 @@
          </p>
     </script>
     <script>
-        var bindAddTweetAction = function () {
-            $('#id-button-add').on('click', function () {
-                var self = $(this);
-                var content = $('#id-input-content').val();
-                var id = $('#id-content-comment').attr("tweet_id")
-                var form = {
-                    'content': content
-                };
-                console.log('form', form);
-
-                var data = JSON.stringify(form);
-                console.log('data', data);
-                var request = {
-                    url: '/tweet/comments/' + id,
-                    type: 'post',
-                    data: data,
-                    contentType: 'application/json',
-                    success: function (r) {
-                        console.log(r);
-                        if (r.success) {
-                            console.log('add success', r);
-                            $('#id-template-tweet').tmpl(r.data).insertAfter('#id-comment-title');
-                            $('#id-input-content').val("");
-                        }
-                    },
-                    error: function () {
-                        console.log(r);
-                    }
-                };
-                $.ajax(request);
-            });
-        };
-
         $(document).ready(function(){
-            bindAddTweetAction();
+            bindAddCommentAction();
         });
     </script>
 </head>
@@ -70,7 +39,7 @@
         <button id="id-button-add">发表评论</button>
     </div>
     <h3 id="id-comment-title">所有评论：</h3>
-    {% for c in one_tweet.comments %}
+    {% for c in comments %}
         <p>
             {{ c.user.username }}
             {{ c.content }}

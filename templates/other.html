@@ -16,8 +16,7 @@
     <h3 id="id-tweet-title">{{ user.username }}的所有微博</h3>
     {% for t in all_tweets %}
     <p>
-        <a href="/{{ t.user.username }}">{{ t.user.username }}</a>:
-        {{ t.content }}
+        <a href="{{ url_for('other_user_view', username=t.user.username) }}">{{ t.user.username }}</a>        {{ t.content }}
         {{ t.created_time }}
     </p>
     <a href="/tweet/comments/{{ t.id }}">评论({{ t.comments|length }})</a>

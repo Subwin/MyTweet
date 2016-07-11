@@ -8,7 +8,7 @@ var log = function () {
 };
 
 
-// form
+// form 把keys的值全部取到，保存到form
 var formFromKeys = function(keys, prefix) {
     var form = {};
     for(var i = 0; i < keys.length; i++) {
@@ -54,5 +54,22 @@ weibo.register = function(form, success, error) {
 
 weibo.login = function(form, success, error) {
     var url = '/login';
+    this.post(url, form, success, error);
+};
+
+weibo.push_tweet = function (form, success, error) {
+    var url = '/timeline';
+    this.post(url, form, success, error);
+};
+
+weibo.push_comment = function (form, success, error) {
+    var id = form['id'];
+    var url = '/tweet/comments/' + id;
+    this.post(url, form, success, error);
+};
+
+weibo.delete = function (form, success, error) {
+    var tweet_id = form['id'];
+    var url = '/tweet/delete/' + tweet_id;
     this.post(url, form, success, error);
 };

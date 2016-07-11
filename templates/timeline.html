@@ -5,6 +5,8 @@
     <title>timeline</title>
     <script src="/static/jquery-3.0.0.min.js"></script>
     <script src="/static/jquery.tmpl.min.js"></script>
+    <script src="/static/weibo.js"></script>
+    <script src="/static/action.js"></script>
     <script id="id-template-tweet" type="text/x-jquery-tmpl">
          <p>
 {#            <a href="/${ user.username }">${ user.username }</a>:#}
@@ -13,41 +15,9 @@
          </p>
     </script>
     <script>
-        var bindAddTweetAction = function () {
-            $('#id-button-add').on('click', function () {
-                var self = $(this);
-                var content = $('#id-input-content').val();
-                var form = {
-                    'content': content
-                };
-                console.log('form', form);
-
-                var data = JSON.stringify(form);
-                console.log('data', data);
-                var request = {
-                    url: '/timeline',
-                    type: 'post',
-                    data: data,
-                    contentType: 'application/json',
-                    success: function (r) {
-                        console.log(r);
-                        if (r.success) {
-                            console.log('add success', r);
-                            $('#id-template-tweet').tmpl(r.data).insertAfter('#id-tweet-title');
-                            $('#id-input-content').val("");
-                        }
-                    },
-                    error: function () {
-                        console.log(r);
-                    }
-                };
-                $.ajax(request);
-            });
-        };
 
         $(document).ready(function(){
-{#            bindDeleteAction();#}
-            bindAddTweetAction();
+            bindAddTweetAction('#id-tweet-title');
         });
     </script>
 </head>
@@ -68,7 +38,8 @@
     <h3 id="id-tweet-title">所有微博</h3>
     {% for t in all_tweets %}
     <p>
-        <a href="/{{ t.user.username }}">{{ t.user.username }}</a>:
+{#        <a href="/tweet/{{ t.user.username }}">{{ t.user.username }}</a>:#}
+        <a href="{{ url_for('other_user_view', username=t.user.username) }}">{{ t.user.username }}</a>
         {{ t.content }}
         {{ t.created_time }}
     </p>

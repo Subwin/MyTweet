@@ -81,9 +81,11 @@ def register():
     return jsonify(r)
 
 
-@app.route('/<username>')
+@app.route('/tweet/<username>')
 def other_user_view(username):
     user = User.query.filter_by(username=username).first()
+    print('debug username', username)
+    print('debug user', user)
     view_user = current_user()
     all_tweets = user.tweets
     all_tweets.sort(key=lambda t: t.created_time, reverse=True)
@@ -166,7 +168,7 @@ def tweet_update(tweet_id):
         return redirect(url_for('mytweet_view', username=user.username))
 
 
-@app.route('/tweet/delete/<tweet_id>')
+@app.route('/tweet/delete/<tweet_id>', methods=['POST'])
 def tweet_delete(tweet_id):
     t = Tweet.query.filter_by(id=tweet_id).first()
     if t is None:
@@ -188,7 +190,9 @@ def comments_view(tweet_id):
     view_user = current_user()
     one_tweet = Tweet.query.filter_by(id=tweet_id).first()
     user = one_tweet.user
-    return render_template('comments.html', user=user, view_user = view_user, one_tweet=one_tweet)
+    comments = one_tweet.comments
+    comments.sort(key=lambda t: t.created_time, reverse=True)
+    return render_template('comments.html', user=user, view_user = view_user, one_tweet=one_tweet, comments=comments)
 
 
 @app.route('/tweet/comments/<tweet_id>', methods=['POST'])
@@ -196,6 +200,7 @@ def comment_add(tweet_id):
     user = current_user()
     tweet = Tweet.query.filter_by(id=tweet_id).first()
     form = request.get_json()
+    print('debug form', form)
     c = Comment(form)
     c.user = user
     c.tweet = tweet
