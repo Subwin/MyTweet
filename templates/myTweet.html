@@ -85,9 +85,11 @@
         <a href="/mytweet/{{ user.username }}">我的微博</a>
         <a href="{{ url_for('timeline',username=user.username) }}">返回首页</a>
     </P>
+    <div>
         <textarea id="id-input-content" name="content" placeholder="写点东西"></textarea>
         <br>
         <button id="id-button-add">添加微博</button>
+    </div>
     {% for t in all_tweets %}
     <p>
         {{ t.content }} : {{ t.created_time }}
@@ -95,6 +97,7 @@
         <a href="/tweet/update/{{t.id}}">编辑</a>
         <button class="button-delete" data-id="{{ t.id }}">删除</button>
     </p>
+        <a href="/tweet/comments/{{ t.id }}">评论({{ t.comments|length }})</a>
     {% endfor %}
 </body>
 </html>

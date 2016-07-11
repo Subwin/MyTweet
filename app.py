@@ -10,6 +10,7 @@ from flask import abort
 
 from models import User
 from models import Tweet
+from models import Comment
 
 app = Flask(__name__)
 app.secret_key = 'random string'
@@ -190,6 +191,26 @@ def comments_view(tweet_id):
     return render_template('comments.html', user=user, view_user = view_user, one_tweet=one_tweet)
 
 
+@app.route('/tweet/comments/<tweet_id>', methods=['POST'])
+def comment_add(tweet_id):
+    user = current_user()
+    tweet = Tweet.query.filter_by(id=tweet_id).first()
+    form = request.get_json()
+    c = Comment(form)
+    c.user = user
+    c.tweet = tweet
+    c.save()
+    r = {
+        'success': True,
+        'message': '添加成功',
+        'data': c.json()
+    }
+    return jsonify(r)
+
+
+# 待解决：
+# jQ模板有点问题:看mytweet的模板
+# 视图函数非常相似，如何简化
 if __name__ == '__main__':
     config = {
         'debug': True,

@@ -16,6 +16,7 @@
             $('#id-button-add').on('click', function () {
                 var self = $(this);
                 var content = $('#id-input-content').val();
+                var id = $('#id-content-comment').attr("tweet_id")
                 var form = {
                     'content': content
                 };
@@ -24,7 +25,7 @@
                 var data = JSON.stringify(form);
                 console.log('data', data);
                 var request = {
-                    url: '/timeline',
+                    url: '/tweet/comments/' + id,
                     type: 'post',
                     data: data,
                     contentType: 'application/json',
@@ -32,7 +33,7 @@
                         console.log(r);
                         if (r.success) {
                             console.log('add success', r);
-                            $('#id-template-tweet').tmpl(r.data).insertAfter('#id-tweet-title');
+                            $('#id-template-tweet').tmpl(r.data).insertAfter('#id-comment-title');
                             $('#id-input-content').val("");
                         }
                     },
@@ -45,7 +46,6 @@
         };
 
         $(document).ready(function(){
-{#            bindDeleteAction();#}
             bindAddTweetAction();
         });
     </script>
@@ -59,7 +59,7 @@
         <a href="{{ url_for('timeline',username=view_user.username) }}">返回首页</a>
     </P>
 
-    <p>
+    <p id="id-content-comment" tweet_id="{{ one_tweet.id }}">
         <a href="/{{ one_tweet.user.username }}">{{ one_tweet.user.username }}</a>:
         {{ one_tweet.content }}
         {{ one_tweet.created_time }}
