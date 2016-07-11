@@ -5,6 +5,8 @@
     <title>myTweet</title>
     <script src="/static/jquery-3.0.0.min.js"></script>
     <script src="/static/jquery.tmpl.min.js"></script>
+    <script src="/static/weibo.js"></script>
+    <script src="/static/action.js"></script>
     <script id="id-template-tweet" type="text/x-jquery-tmpl">
          <p>
             ${ content } : ${ created_time }
@@ -13,67 +15,9 @@
          </p>
     </script>
     <script>
-        var bindDeleteAction = function() {
-            $('body').on('click', '.button-delete', function () {
-                var self = $(this);
-                var tweet_id = this.dataset.id;
-                var tweet_name = this.dataset.name;
-                console.log('tid', tweet_id);
-                console.log('tname', tweet_name);
-
-                var request = {
-                    url: '/tweet/delete/' + tweet_id,
-                    type: 'get',
-                    contentType: 'application/json',
-                    success: function (r) {
-                        console.log(r);
-                        if (r.success) {
-                            self.parent().remove();
-                        }
-                    },
-                    error: function () {
-                        console.log(r);
-                    }
-                };
-                $.ajax(request);
-            });
-        };
-
-
-        var bindAddTweetAction = function () {
-            $('#id-button-add').on('click', function () {
-                var self = $(this);
-                var content = $('#id-input-content').val();
-                var form = {
-                    'content': content
-                };
-                console.log('form', form);
-
-                var data = JSON.stringify(form);
-                console.log('data', data);
-                var request = {
-                    url: '/mytweet',
-                    type: 'post',
-                    data: data,
-                    contentType: 'application/json',
-                    success: function (r) {
-                        console.log(r);
-                        if (r.success) {
-                            console.log('add success', r);
-                            $('#id-template-tweet').tmpl(r.data).insertAfter('#id-button-add')
-                        }
-                    },
-                    error: function () {
-                        console.log(r);
-                    }
-                };
-                $.ajax(request);
-            });
-        };
-
         $(document).ready(function(){
             bindDeleteAction();
-            bindAddTweetAction();
+            bindAddTweetAction('#id-button-add');
         });
     </script>
 </head>
@@ -96,8 +40,9 @@
 {#        <a href="{{url_for('tweet_update_view', tweet_id=t.id)}}">编辑</a>#}
         <a href="/tweet/update/{{t.id}}">编辑</a>
         <button class="button-delete" data-id="{{ t.id }}">删除</button>
-    </p>
+        <br>
         <a href="/tweet/comments/{{ t.id }}">评论({{ t.comments|length }})</a>
+    </p>
     {% endfor %}
 </body>
 </html>
