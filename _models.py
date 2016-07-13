@@ -1,20 +1,21 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import sql
+from .app import db
 
 import time
 import shutil
 
-# 数据库的路径
-db_path = './db.sqlite'
-# 获取 app 的实例
-app = Flask(__name__)
-# app = app.app
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.secret_key = 'random string'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///{}'.format(db_path)
-
-db = SQLAlchemy(app)
+# # 数据库的路径
+# db_path = './db.sqlite'
+# # 获取 app 的实例
+# app = Flask(__name__)
+# # app = app.app
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+# app.secret_key = 'random string'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///{}'.format(db_path)
+#
+# db = SQLAlchemy(app)
 
 
 class ReprMixin(object):

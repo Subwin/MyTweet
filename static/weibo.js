@@ -58,18 +58,18 @@ weibo.login = function(form, success, error) {
 };
 
 weibo.push_tweet = function (form, success, error) {
-    var url = '/timeline';
+    var url = '/api/tweet/add';
     this.post(url, form, success, error);
 };
 
 weibo.push_comment = function (form, success, error) {
     var id = form['id'];
-    var url = '/tweet/comments/' + id;
+    var url = '/api/tweet/comments/' + id;
     this.post(url, form, success, error);
 };
 
 weibo.delete = function (form, success, error) {
     var tweet_id = form['id'];
-    var url = '/tweet/delete/' + tweet_id;
+    var url = '/api/tweet/delete/' + tweet_id;
     this.post(url, form, success, error);
 };
