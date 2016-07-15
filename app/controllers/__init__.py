@@ -22,7 +22,7 @@ def current_user():
 
 @main.route('/')
 def index():
-    view = 'login_view'
+    view = 'auth.login_view'
     return redirect(url_for(view))
 
 

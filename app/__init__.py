@@ -6,9 +6,11 @@ db = SQLAlchemy()
 # 待解决：
 # jQ模板有点问题:看mytweet的模板
 # 视图函数非常相似，如何简化
-if __name__ == '__main__':
+
+
+def init_app():
     # 数据库的路径
-    db_path = './db.sqlite'
+    db_path = 'db.sqlite'
     # 获取 app 的实例
     app = Flask(__name__)
     app.secret_key = 'random string'
@@ -20,15 +22,12 @@ if __name__ == '__main__':
     db.init_app(app)
     db.app = app
 
-    from api import api
-    from auth import blue as auth
-    from controllers import main
+    from .api import api
+    from .auth import blue as auth
+    from .controllers import main
 
     app.register_blueprint(api, url_prefix='/api')
     app.register_blueprint(auth)
     app.register_blueprint(main)
 
-    config = {
-        'debug': True,
-    }
-    app.run(**config)
+    return app

@@ -18,7 +18,7 @@ blue = Blueprint('auth', __name__)
 def current_user():
     # print('session, debug', session.permanent)
     username = session.get('username', '')
-    u = User.query.filter_by(username=username).first()
+    u = User.user_by_name(username)
     return u
 
 
@@ -50,10 +50,9 @@ def register():
     if status:
         print("register success", form)
         # 保存到数据库
-        u.gid = 10 #什么意思
         u.save()
         r['success'] = True
-        r['next'] = request.args.get('next', url_for('controllers.timeline_view'))
+        r['next'] = request.args.get('next', url_for('controllers.mytimeline_view'))
         session.permanent = True
         session['username'] = u.username
     else:
@@ -68,6 +67,7 @@ def register():
 def login():
     form = request.get_json()
     username = form.get('username', '')
+    print(username)
     user = User.user_by_name(username)
     print('user login', user, form)
     r = {
@@ -76,7 +76,7 @@ def login():
     }
     if user is not None and user.validate_auth(form):
         r['success'] = True
-        r['next'] = request.args.get('next', url_for('controllers.timeline_view'))
+        r['next'] = request.args.get('next', url_for('controllers.mytimeline_view'))
         session.permanent = True
         session['username'] = username
     else:
