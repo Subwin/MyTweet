@@ -50,7 +50,7 @@ def register():
     if status:
         print("register success", form)
         # 保存到数据库
-        u.gid = 10
+        u.gid = 10 #什么意思
         u.save()
         r['success'] = True
         r['next'] = request.args.get('next', url_for('controllers.timeline_view'))
