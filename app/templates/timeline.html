@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>timeline</title>
-    <script src="/static/jquery-3.0.0.min.js"></script>
-    <script src="/static/jquery.tmpl.min.js"></script>
-    <script src="/static/weibo.js"></script>
-    <script src="/static/action.js"></script>
+    <script src="/static/js/jquery-3.0.0.min.js"></script>
+    <script src="/static/js/jquery.tmpl.min.js"></script>
+    <script src="/static/js/weibo.js"></script>
+    <script src="/static/js/action.js"></script>
     <script id="id-template-tweet" type="text/x-jquery-tmpl">
          <p>
 {#            <a href="/${ user.username }">${ user.username }</a>:#}
@@ -26,7 +26,7 @@
         您的用户名：{{ user.username }}
         关注用户：0
         粉丝：0
-        <a href="/mytweet/{{ user.username }}">我的微博</a>
+        <a href="{{ url_for('controllers.mytweet_view')}}">我的微博</a>
     </P>
 
     <div>
@@ -39,7 +39,7 @@
     {% for t in all_tweets %}
     <p>
 {#        <a href="/tweet/{{ t.user.username }}">{{ t.user.username }}</a>:#}
-        <a href="{{ url_for('other_user_view', username=t.user.username) }}">{{ t.user.username }}</a>
+        <a href="{{ url_for('controllers.other_tweet_view', username=t.user.username) }}">{{ t.user.username }}</a>
         {{ t.content }}
         {{ t.created_time }}
     </p>

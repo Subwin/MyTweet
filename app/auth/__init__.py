@@ -14,14 +14,6 @@ from ..models import User
 blue = Blueprint('auth', __name__)
 
 
-# 通过 session 来获取当前登录的用户
-def current_user():
-    # print('session, debug', session.permanent)
-    username = session.get('username', '')
-    u = User.user_by_name(username)
-    return u
-
-
 @blue.route('/')
 def index():
     view = 'auth.login_view'
@@ -52,7 +44,7 @@ def register():
         # 保存到数据库
         u.save()
         r['success'] = True
-        r['next'] = request.args.get('next', url_for('controllers.mytimeline_view'))
+        r['next'] = request.args.get('next', url_for('controllers.timeline_view'))
         session.permanent = True
         session['username'] = u.username
     else:
@@ -76,7 +68,7 @@ def login():
     }
     if user is not None and user.validate_auth(form):
         r['success'] = True
-        r['next'] = request.args.get('next', url_for('controllers.mytimeline_view'))
+        r['next'] = request.args.get('next', url_for('controllers.timeline_view'))
         session.permanent = True
         session['username'] = username
     else:

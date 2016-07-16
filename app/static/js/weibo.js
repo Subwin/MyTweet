@@ -73,3 +73,9 @@ weibo.delete = function (form, success, error) {
     var url = '/api/tweet/delete/' + tweet_id;
     this.post(url, form, success, error);
 };
+
+weibo.update_tweet = function (form, success, error) {
+    var tweet_id = form['id'];
+    var url = '/api/tweet/update/' + tweet_id;
+    this.post(url, form, success, error);
+};

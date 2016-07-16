@@ -14,15 +14,38 @@ var bindAddTweetAction = function (after_id) {
         };
         var success = function (r) {
             if (r.success) {
-                    console.log('add success', r);
-                    $('#id-template-tweet').tmpl(r.data).insertAfter(after_id);
-                    $('#id-input-content').val("");
+                log('add success', r);
+                $('#id-template-tweet').tmpl(r.data).insertAfter(after_id);
+                $('#id-input-content').val("");
             }
         };
         var error = function (err) {
-            log('reg, ', err);
+            log('err, ', err);
         };
         weibo.push_tweet(form, success, error);
+    });
+};
+
+
+var bindUpdateTweetAction = function () {
+    $('#id-button-submit').on('click', function () {
+        var content = $('#id-input-content').val();
+        var tweet_id = $('#id-input-content').data('id')
+        var form = {
+            'content': content,
+            'id':tweet_id
+        };
+        var success = function (r) {
+            if (r.success) {
+                log('update success', r);
+                $('#id-input-content').val("");
+                window.location.href = r.next;
+            }
+        };
+        var error = function (err) {
+            log('err, ', err);
+        };
+        weibo.update_tweet(form, success, error);
     });
 };
 
@@ -31,20 +54,20 @@ var bindAddCommentAction = function () {
     $('#id-button-add').on('click', function () {
         var self = $(this);
         var content = $('#id-input-content').val();
-        var id = $('#id-content-comment').attr("tweet_id")
+        var id = $('#id-content-comment').data('id')
         var form = {
             'content': content,
             'id': id
         };
         var success = function (r) {
             if (r.success) {
-                console.log('add success', r);
+                log('add success', r);
                 $('#id-template-tweet').tmpl(r.data).insertAfter('#id-comment-title');
                 $('#id-input-content').val("");
             }
         };
         var error = function (err) {
-            log('reg, ', err);
+            log('err, ', err);
         };
         weibo.push_comment(form, success, error);
     });
@@ -61,12 +84,15 @@ var bindDeleteAction = function() {
         var success = function (r) {
             console.log(r);
             if (r.success) {
+                log(r.message);
                 self.parent().remove();
             }
         };
         var error = function (r) {
-            console.log(r);
+            log('err, ', r);
         };
         weibo.delete(form, success, error)
     });
 };
+
+

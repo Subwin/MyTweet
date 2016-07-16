@@ -26,21 +26,29 @@ def index():
     return redirect(url_for(view))
 
 
+@main.route('/tweet')
+def timeline_view():
+    u = current_user()
+    all_tweets = Tweet.query.all()
+    all_tweets.sort(key=lambda t: t.created_time, reverse=True)
+    return render_template('timeline.html', user=u, all_tweets=all_tweets)
+
+
 @main.route('/timeline')
-def mytimeline_view():
+def mytweet_view():
     u = current_user()
     all_tweets = u.tweets
     all_tweets.sort(key=lambda t: t.created_time, reverse=True)
-    return render_template('mytimeline.html', user=u, all_tweets=all_tweets)
+    return render_template('mytweet.html', user=u, all_tweets=all_tweets)
 
 
 @main.route('/timeline/<username>')
-def other_timeline_view(username):
+def other_tweet_view(username):
     user = User.query.filter_by(username=username).first_or_404()
     view_user = current_user()
     all_tweets = user.tweets
     all_tweets.sort(key=lambda t: t.created_time, reverse=True)
-    return render_template('other.html', user=user, view_user=view_user, all_tweets=all_tweets)
+    return render_template('othertweet.html', user=user, view_user=view_user, all_tweets=all_tweets)
 
 
 

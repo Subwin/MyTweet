@@ -28,14 +28,19 @@ def tweet_update(tweet_id):
     one_tweet = Tweet.tweet_by_id(tweet_id)
     user = one_tweet.user
     cur_u = current_user()
-    if user != cur_u:
+    if cur_u is None or user != cur_u:
         abort(401)
     else:
-        form = request.form
+        form = request.get_json()
         one_tweet.update(form)
         one_tweet.save()
-        view = 'controllers.mytimeline_view'
-        return redirect(url_for(view, username=user.username))
+        view = url_for('controllers.mytweet_view')
+        r = dict(
+            success=True,
+            message='修改成功',
+            next=view,
+        )
+        return jsonify(r)
 
 
 @api.route('/tweet/delete/<tweet_id>', methods=['POST'])

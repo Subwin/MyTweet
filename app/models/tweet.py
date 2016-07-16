@@ -1,6 +1,5 @@
 from . import ReprMixin
 from . import Update
-from sqlalchemy import sql
 from . import db
 import time
 
@@ -14,7 +13,7 @@ class Tweet(db.Model, ReprMixin, Update):
     comments = db.relationship('Comment', backref="tweet")
 
     @staticmethod
-    def tweet_by_id(self, tweet_id):
+    def tweet_by_id(tweet_id):
         return Tweet.query.filter_by(id=tweet_id).first_or_404()
 
     def __init__(self, form):
@@ -22,6 +21,11 @@ class Tweet(db.Model, ReprMixin, Update):
         content = form.get('content', '')
         self.content = content
         self.created_time = int(time.time())
+
+    def update(self, form):
+        print('tweet.update, ', form)
+        new_content = form['content'] if form['content'] != '' else self.content
+        self.content = new_content
 
     def json(self):
         self.id

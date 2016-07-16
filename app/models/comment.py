@@ -1,6 +1,5 @@
 from . import ReprMixin
 from . import Update
-from sqlalchemy import sql
 from . import db
 import time
 

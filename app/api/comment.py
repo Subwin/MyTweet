@@ -11,6 +11,7 @@ from flask import jsonify
 def comment_add(tweet_id):
     user = current_user()
     tweet = Tweet.tweet_by_id(tweet_id)
+    print('debug tweet_id', tweet_id)
     form = request.get_json()
     print('debug form', form)
     c = Comment(form)

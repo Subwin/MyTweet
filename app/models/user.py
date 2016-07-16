@@ -1,11 +1,10 @@
 from . import ReprMixin
 from . import Update
-from sqlalchemy import sql
 from . import db
 import time
 
 
-class   User(db.Model, ReprMixin, Update):
+class User(db.Model, ReprMixin, Update):
     # 类的属性就是数据库表的字段
     # 这些都是内置的 __tablename__ 是表名
     __tablename__ = 'users'

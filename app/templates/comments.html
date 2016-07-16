@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>comments</title>
-    <script src="/static/jquery-3.0.0.min.js"></script>
-    <script src="/static/jquery.tmpl.min.js"></script>
-    <script src="/static/weibo.js"></script>
-    <script src="/static/action.js"></script>
+    <script src="/static/js/jquery-3.0.0.min.js"></script>
+    <script src="/static/js/jquery.tmpl.min.js"></script>
+    <script src="/static/js/weibo.js"></script>
+    <script src="/static/js/action.js"></script>
     <script id="id-template-tweet" type="text/x-jquery-tmpl">
          <p>
             ${ content }
@@ -24,11 +24,11 @@
         您的用户名：{{ view_user.username }}
         关注用户：0
         粉丝：0
-        <a href="{{ url_for('controllers.mytimeline_view', username=view_user.username) }}">我的微博</a>
-        <a href="{{ url_for('timeline',username=view_user.username) }}">返回首页</a>
+        <a href="{{ url_for('controllers.mytweet_view') }}">我的微博</a>
+        <a href="{{ url_for('controllers.timeline_view',username=user.username) }}">返回首页</a>
     </P>
 
-    <p id="id-content-comment" tweet_id="{{ one_tweet.id }}">
+    <p id="id-content-comment" data-id="{{ one_tweet.id }}">
         <a href="/{{ one_tweet.user.username }}">{{ one_tweet.user.username }}</a>:
         {{ one_tweet.content }}
         {{ one_tweet.created_time }}

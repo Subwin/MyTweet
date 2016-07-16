@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>myTweet</title>
-    <script src="/static/jquery-3.0.0.min.js"></script>
-    <script src="/static/jquery.tmpl.min.js"></script>
-    <script src="/static/weibo.js"></script>
-    <script src="/static/action.js"></script>
+    <script src="/static/js/jquery-3.0.0.min.js"></script>
+    <script src="/static/js/jquery.tmpl.min.js"></script>
+    <script src="/static/js/weibo.js"></script>
+    <script src="/static/js/action.js"></script>
     <script id="id-template-tweet" type="text/x-jquery-tmpl">
          <p>
             ${ content } : ${ created_time }
@@ -26,8 +26,8 @@
         您的用户名：{{ user.username }}
         关注用户：0
         粉丝：0
-        <a href="/mytweet/{{ user.username }}">我的微博</a>
-        <a href="{{ url_for('timeline',username=user.username) }}">返回首页</a>
+        <a href="{{ url_for('controllers.mytweet_view') }}">我的微博</a>
+        <a href="{{ url_for('controllers.timeline_view',username=user.username) }}">返回首页</a>
     </P>
     <div>
         <textarea id="id-input-content" name="content" placeholder="写点东西"></textarea>
