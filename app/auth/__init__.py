@@ -64,7 +64,7 @@ def login():
     print('user login', user, form)
     r = {
         'success': False,
-        'message': '登录失败',
+        'message': '登录成功',
     }
     if user is not None and user.validate_auth(form):
         r['success'] = True
