@@ -1,17 +1,15 @@
 <!DOCTYPE html>
+{% extends "base.html" %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>timeline</title>
-    <script src="/static/js/jquery-3.0.0.min.js"></script>
+{% block head %}
+    {{ super() }}
     <script src="/static/js/jquery.tmpl.min.js"></script>
     <script src="/static/js/weibo.js"></script>
     <script src="/static/js/action.js"></script>
     <script id="id-template-tweet" type="text/x-jquery-tmpl">
          <p>
-{#            <a href="/${ user.username }">${ user.username }</a>:#}
-            ${ content }
-            ${ created_time }
+              ${ content }
+              ${ created_time }
          </p>
     </script>
     <script>
@@ -20,31 +18,60 @@
             bindAddTweetAction('#id-tweet-title');
         });
     </script>
-</head>
+    {% block title %}
+        <title>timeline</title>
+    {% endblock %}
+{% endblock %}
 <body>
-    <P>
-        您的用户名：{{ user.username }}
-        关注用户：0
-        粉丝：0
-        <a href="{{ url_for('controllers.mytweet_view')}}">我的微博</a>
-    </P>
+    {% block content %}
+        <!-- Blog Entries Column -->
 
-    <div>
-        <textarea id="id-input-content" name="content" placeholder="写点东西"></textarea>
-        <br>
-        <button id="id-button-add">添加微博</button>
-    </div>
+                <h1 class="page-header">
+                    首页
+                    <small>所有人的微博</small>
+                </h1>
 
-    <h3 id="id-tweet-title">所有微博</h3>
-    {% for t in all_tweets %}
-    <p>
-{#        <a href="/tweet/{{ t.user.username }}">{{ t.user.username }}</a>:#}
-        <a href="{{ url_for('controllers.other_tweet_view', username=t.user.username) }}">{{ t.user.username }}</a>
-        {{ t.content }}
-        {{ t.created_time }}
-    </p>
-    <a href="/tweet/comments/{{ t.id }}">评论({{ t.comments|length }})</a>
-{#    <!--{{ t.comments|length }} 就是求对象的长度，等价于python中len(t.comments)-->#}
-    {% endfor %}
+                <!-- First Blog Post -->
+                <p class="lead">
+                    <a href="index.php">Start Bootstrap</a>
+                </p>
+                <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:00 PM</p>
+                <hr>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, veritatis, tempora, necessitatibus inventore nisi quam quia repellat ut tempore laborum possimus eum dicta id animi corrupti debitis ipsum officiis rerum.</p>
+                <a class="btn btn-primary" href="#">看看他的微博 <span class="glyphicon glyphicon-chevron-right"></span></a>
+                <hr>
+
+                <!-- Second Blog Post -->
+
+
+
+
+                <!-- Pager -->
+                <ul class="pager">
+                    <li class="previous">
+                        <a href="#">&larr; Older</a>
+                    </li>
+                    <li class="next">
+                        <a href="#">Newer &rarr;</a>
+                    </li>
+                </ul>
+    {% endblock %}
+
+    {% block sidebar %}
+        {{ super() }}
+        <!-- Blog Input Well -->
+        <div class="well">
+            <h4>说点新鲜事？</h4>
+            <div>
+                <textarea class="form-control" id="id-input-content" name="content" placeholder="写点东西" rows="6"></textarea>
+            </div>
+            <br>
+            <div align="right">
+                <button type="button" class="btn btn-primary btn-lg" id="id-button-add">
+                    发！
+                </button>
+            </div>
+        </div>
+    {% endblock %}
 </body>
 </html>

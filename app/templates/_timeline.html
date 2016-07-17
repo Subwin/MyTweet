@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>timeline</title>
+    <script src="/static/js/jquery-3.0.0.min.js"></script>
+    <script src="/static/js/jquery.tmpl.min.js"></script>
+    <script src="/static/js/weibo.js"></script>
+    <script src="/static/js/action.js"></script>
+    <script id="id-template-tweet" type="text/x-jquery-tmpl">
+         <p>
+{#            <a href="/${ user.username }">${ user.username }</a>:#}
+            ${ content }
+            ${ created_time }
+         </p>
+    </script>
+    <script>
+
+        $(document).ready(function(){
+            bindAddTweetAction('#id-tweet-title');
+        });
+    </script>
+</head>
+<body>
+    <P>
+        您的用户名：{{ user.username }}
+        关注用户：0
+        粉丝：0
+        <a href="{{ url_for('controllers.mytweet_view')}}">我的微博</a>
+    </P>
+
+    <div>
+        <textarea id="id-input-content" name="content" placeholder="写点东西"></textarea>
+        <br>
+        <button id="id-button-add">添加微博</button>
+    </div>
+
+    <h3 id="id-tweet-title">所有微博</h3>
+    {% for t in all_tweets %}
+    <p>
+{#        <a href="/tweet/{{ t.user.username }}">{{ t.user.username }}</a>:#}
+        <a href="{{ url_for('controllers.other_tweet_view', username=t.user.username) }}">{{ t.user.username }}</a>
+        {{ t.content }}
+        {{ t.created_time }}
+    </p>
+    <a href="/tweet/comments/{{ t.id }}">评论({{ t.comments|length }})</a>
+{#    <!--{{ t.comments|length }} 就是求对象的长度，等价于python中len(t.comments)-->#}
+    {% endfor %}
+</body>
+</html>
