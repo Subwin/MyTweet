@@ -25,36 +25,38 @@
 <body>
     {% block content %}
         <!-- Blog Entries Column -->
+    <h1 class="page-header">
+        首页
+        <small>所有人的微博</small>
+    </h1>
+    {% for t in all_tweets %}
+    <!-- First Blog Post -->
+    <br>
+    <p class="lead">
+        <a href="{{ url_for('controllers.other_tweet_view', username=t.user.username) }}">{{ t.user.username }}</a>
+    </p>
+    <p><span class="glyphicon glyphicon-time"></span> {{ t.created_time }}</p>
+    <hr>
+    <div>
+        <h3>{{ t.content }}</h3>
+        <a href="/tweet/comments/{{ t.id }}"><h4>评论({{ t.comments|length }})</h4></a>
+    </div>
+{#    <a class="btn btn-primary" href="{{ url_for('controllers.other_tweet_view', username=all_tweets[0].user.username) }}">看看他的微博 <span class="glyphicon glyphicon-chevron-right"></span></a>#}
+    <hr>
+    {% endfor %}
+    <!-- Second Blog Post -->
 
-                <h1 class="page-header">
-                    首页
-                    <small>所有人的微博</small>
-                </h1>
 
-                <!-- First Blog Post -->
-                <p class="lead">
-                    <a href="index.php">Start Bootstrap</a>
-                </p>
-                <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:00 PM</p>
-                <hr>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, veritatis, tempora, necessitatibus inventore nisi quam quia repellat ut tempore laborum possimus eum dicta id animi corrupti debitis ipsum officiis rerum.</p>
-                <a class="btn btn-primary" href="#">看看他的微博 <span class="glyphicon glyphicon-chevron-right"></span></a>
-                <hr>
-
-                <!-- Second Blog Post -->
-
-
-
-
-                <!-- Pager -->
-                <ul class="pager">
-                    <li class="previous">
-                        <a href="#">&larr; Older</a>
-                    </li>
-                    <li class="next">
-                        <a href="#">Newer &rarr;</a>
-                    </li>
-                </ul>
+{#    todo:增加翻页功能#}
+    <!-- Pager -->
+{#    <ul class="pager">#}
+{#        <li class="previous">#}
+{#            <a href="#">&larr; Newer</a>#}
+{#        </li>#}
+{#        <li class="next">#}
+{#            <a href="#">Older &rarr;</a>#}
+{#        </li>#}
+{#    </ul>#}
     {% endblock %}
 
     {% block sidebar %}

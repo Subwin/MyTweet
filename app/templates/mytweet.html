@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+{% extends "base.html" %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>myTweet</title>
-    <script src="/static/js/jquery-3.0.0.min.js"></script>
+{% block head %}
+    {{ super() }}
     <script src="/static/js/jquery.tmpl.min.js"></script>
     <script src="/static/js/weibo.js"></script>
     <script src="/static/js/action.js"></script>
@@ -20,29 +21,65 @@
             bindAddTweetAction('#id-button-add');
         });
     </script>
+    {% block title %}
+        <title>mytweet</title>
+    {% endblock %}
+{% endblock %}
 </head>
 <body>
-    <P>
-        您的用户名：{{ user.username }}
-        关注用户：0
-        粉丝：0
-        <a href="{{ url_for('controllers.mytweet_view') }}">我的微博</a>
-        <a href="{{ url_for('controllers.timeline_view',username=user.username) }}">返回首页</a>
-    </P>
-    <div>
-        <textarea id="id-input-content" name="content" placeholder="写点东西"></textarea>
-        <br>
-        <button id="id-button-add">添加微博</button>
-    </div>
+{% block content %}
+        <!-- Blog Entries Column -->
+    <h1 class="page-header">
+        我的主页
+        <small>我的微博</small>
+    </h1>
     {% for t in all_tweets %}
-    <p>
-        {{ t.content }} : {{ t.created_time }}
-{#        <a href="{{url_for('tweet_update_view', tweet_id=t.id)}}">编辑</a>#}
+    <!-- First Blog Post -->
+    <br>
+    <p class="lead">
+        <a href="{{ url_for('controllers.other_tweet_view', username=t.user.username) }}">{{ t.user.username }}</a>
+    </p>
+    <p><span class="glyphicon glyphicon-time"></span> {{ t.created_time }}</p>
+    <hr>
+    <div>
+        {{ t.content }}
         <a href="/tweet/update/{{t.id}}">编辑</a>
         <button class="button-delete" data-id="{{ t.id }}">删除</button>
-        <br>
-        <a href="/tweet/comments/{{ t.id }}">评论({{ t.comments|length }})</a>
-    </p>
+        <a href="/tweet/comments/{{ t.id }}"><h4>评论({{ t.comments|length }})</h4></a>
+    </div>
+{#    <a class="btn btn-primary" href="{{ url_for('controllers.other_tweet_view', username=all_tweets[0].user.username) }}">看看他的微博 <span class="glyphicon glyphicon-chevron-right"></span></a>#}
+    <hr>
     {% endfor %}
+    <!-- Second Blog Post -->
+
+
+
+    <!-- Pager -->
+{#    <ul class="pager">#}
+{#        <li class="previous">#}
+{#            <a href="#">&larr; Newer</a>#}
+{#        </li>#}
+{#        <li class="next">#}
+{#            <a href="#">Older &rarr;</a>#}
+{#        </li>#}
+{#    </ul>#}
+    {% endblock %}
+
+    {% block sidebar %}
+        {{ super() }}
+        <!-- Blog Input Well -->
+        <div class="well">
+            <h4>说点新鲜事？</h4>
+            <div>
+                <textarea class="form-control" id="id-input-content" name="content" placeholder="写点东西" rows="6"></textarea>
+            </div>
+            <br>
+            <div align="right">
+                <button type="button" class="btn btn-primary btn-lg" id="id-button-add">
+                    发！
+                </button>
+            </div>
+        </div>
+    {% endblock %}
 </body>
 </html>

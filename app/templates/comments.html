@@ -1,14 +1,14 @@
 <!DOCTYPE html>
+{% extends "base.html" %}
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>comments</title>
-    <script src="/static/js/jquery-3.0.0.min.js"></script>
+{% block head %}
+    {{ super() }}
     <script src="/static/js/jquery.tmpl.min.js"></script>
     <script src="/static/js/weibo.js"></script>
     <script src="/static/js/action.js"></script>
     <script id="id-template-tweet" type="text/x-jquery-tmpl">
-         <p>
+            <p>
             ${ content }
             ${ created_time }
          </p>
@@ -18,25 +18,32 @@
             bindAddCommentAction();
         });
     </script>
+    {% block title %}
+        <title>comments</title>
+    {% endblock %}
+{% endblock %}
 </head>
 <body>
-    <P>
-        您的用户名：{{ view_user.username }}
-        关注用户：0
-        粉丝：0
-        <a href="{{ url_for('controllers.mytweet_view') }}">我的微博</a>
-        <a href="{{ url_for('controllers.timeline_view',username=user.username) }}">返回首页</a>
-    </P>
-
-    <p id="id-content-comment" data-id="{{ one_tweet.id }}">
-        <a href="/{{ one_tweet.user.username }}">{{ one_tweet.user.username }}</a>:
-        {{ one_tweet.content }}
-        {{ one_tweet.created_time }}
+    {% block content %}
+        <!-- Blog Entries Column -->
+    <h1 class="page-header">
+        评论
+        <small>随便说点什么吧</small>
+    </h1>
+    <p class="lead" id="id-content-comment" data-id="{{ one_tweet.id }}">
+        <a href="{{ url_for('controllers.other_tweet_view', username=one_tweet.user.username) }}">{{ one_tweet.user.username }}</a>
     </p>
+    <p><span class="glyphicon glyphicon-time"></span> {{ one_tweet.created_time }}</p>
+    <hr>
     <div>
-        <textarea id="id-input-content" name="content" placeholder="评论点什么"></textarea>
-        <br>
-        <button id="id-button-add">发表评论</button>
+        <h3>{{ one_tweet.content }}</h3>
+    </div>
+    <hr>
+    <div class="well">
+        <h4>评论在下方:</h4>
+        <div class="form-group"><textarea class="form-control" rows="5" id="id-input-content" name="content" placeholder="评论点什么"></textarea>
+        </div>
+        <button type="button" id="id-button-add" class="btn btn-primary">提交评论</button>
     </div>
     <h3 id="id-comment-title">所有评论：</h3>
     {% for c in comments %}
@@ -46,6 +53,18 @@
             {{ c.created_time }}
         </p>
     {% endfor %}
+
+
+    <!-- Pager -->
+{#    <ul class="pager">#}
+{#        <li class="previous">#}
+{#            <a href="#">&larr; Newer</a>#}
+{#        </li>#}
+{#        <li class="next">#}
+{#            <a href="#">Older &rarr;</a>#}
+{#        </li>#}
+{#    </ul>#}
+    {% endblock %}
 
 </body>
 </html>

@@ -6547,6 +6547,9 @@ button.close {
 .affix {
   position: fixed;
 }
+.sidebar_affix {
+    position: fixed;
+  }
 @-ms-viewport {
   width: device-width;
 }

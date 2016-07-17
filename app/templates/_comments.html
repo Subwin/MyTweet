@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>comments</title>
+    <script src="/static/js/jquery-3.0.0.min.js"></script>
+    <script src="/static/js/jquery.tmpl.min.js"></script>
+    <script src="/static/js/weibo.js"></script>
+    <script src="/static/js/action.js"></script>
+    <script id="id-template-tweet" type="text/x-jquery-tmpl">
+         <p>
+            ${ content }
+            ${ created_time }
+         </p>
+    </script>
+    <script>
+        $(document).ready(function(){
+            bindAddCommentAction();
+        });
+    </script>
+</head>
+<body>
+    <P>
+        您的用户名：{{ view_user.username }}
+        关注用户：0
+        粉丝：0
+        <a href="{{ url_for('controllers.mytweet_view') }}">我的微博</a>
+        <a href="{{ url_for('controllers.timeline_view',username=user.username) }}">返回首页</a>
+    </P>
+
+    <p id="id-content-comment" data-id="{{ one_tweet.id }}">
+        <a href="/{{ one_tweet.user.username }}">{{ one_tweet.user.username }}</a>:
+        {{ one_tweet.content }}
+        {{ one_tweet.created_time }}
+    </p>
+    <div>
+        <textarea id="id-input-content" name="content" placeholder="评论点什么"></textarea>
+        <br>
+        <button id="id-button-add">发表评论</button>
+    </div>
+    <h3 id="id-comment-title">所有评论：</h3>
+    {% for c in comments %}
+        <p>
+            {{ c.user.username }}
+            {{ c.content }}
+            {{ c.created_time }}
+        </p>
+    {% endfor %}
+
+</body>
+</html>

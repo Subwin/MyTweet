@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>myTweet</title>
+    <script src="/static/js/jquery-3.0.0.min.js"></script>
+    <script src="/static/js/jquery.tmpl.min.js"></script>
+    <script src="/static/js/weibo.js"></script>
+    <script src="/static/js/action.js"></script>
+    <script id="id-template-tweet" type="text/x-jquery-tmpl">
+         <p>
+            ${ content } : ${ created_time }
+            <a href="tweet/update/${ id }">编辑</a>
+            <button class="button-delete" data-id="${ id }" >删除</button>
+         </p>
+    </script>
+    <script>
+        $(document).ready(function(){
+            bindDeleteAction();
+            bindAddTweetAction('#id-button-add');
+        });
+    </script>
+</head>
+<body>
+    <P>
+        您的用户名：{{ user.username }}
+        关注用户：0
+        粉丝：0
+        <a href="{{ url_for('controllers.mytweet_view') }}">我的微博</a>
+        <a href="{{ url_for('controllers.timeline_view',username=user.username) }}">返回首页</a>
+    </P>
+    <div>
+        <textarea id="id-input-content" name="content" placeholder="写点东西"></textarea>
+        <br>
+        <button id="id-button-add">添加微博</button>
+    </div>
+    {% for t in all_tweets %}
+    <p>
+        {{ t.content }} : {{ t.created_time }}
+{#        <a href="{{url_for('tweet_update_view', tweet_id=t.id)}}">编辑</a>#}
+        <a href="/tweet/update/{{t.id}}">编辑</a>
+        <button class="button-delete" data-id="{{ t.id }}">删除</button>
+        <br>
+        <a href="/tweet/comments/{{ t.id }}">评论({{ t.comments|length }})</a>
+    </p>
+    {% endfor %}
+</body>
+</html>
