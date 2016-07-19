@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tweet update</title>
+    <script src="/static/js/jquery-3.0.0.min.js"></script>
+    <script src="/static/js/jquery.tmpl.min.js"></script>
+    <script src="/static/js/weibo.js"></script>
+    <script src="/static/js/action.js"></script>
+    <script>
+        $(document).ready(function (){
+            bindUpdateTweetAction()
+        });
+    </script>
+</head>
+<body>
+    <P>
+        您的用户名：{{ user.username }}
+        关注用户：0
+        粉丝：0
+        <a href="{{ url_for('controllers.mytweet_view') }}">我的微博</a>
+        <a href="{{ url_for('controllers.timeline_view',username=user.username) }}">返回首页</a>
+    </P>
+{#    todo:修改成ajax交互#}
+        <input id="id-input-content" name="content" data-id="{{ tweet.id }}" placeholder="{{ tweet.content }}"/>
+        <button id="id-button-submit" type="button">修改</button>
+</body>
+</html>

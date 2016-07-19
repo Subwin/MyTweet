@@ -16,6 +16,7 @@ var bindAddTweetAction = function (after_id) {
             if (r.success) {
                 log('add success', r);
                 $('#id-template-tweet').tmpl(r.data).insertAfter(after_id);
+                // $('.page-header').append(mytweet_t)
                 $('#id-input-content').val("");
             }
         };
@@ -29,8 +30,9 @@ var bindAddTweetAction = function (after_id) {
 
 var bindUpdateTweetAction = function () {
     $('#id-button-submit').on('click', function () {
+        log("fuc start");
         var content = $('#id-input-content').val();
-        var tweet_id = $('#id-input-content').data('id')
+        var tweet_id = $('#id-input-content').data('id');
         var form = {
             'content': content,
             'id':tweet_id
@@ -85,7 +87,7 @@ var bindDeleteAction = function() {
             console.log(r);
             if (r.success) {
                 log(r.message);
-                self.parent().remove();
+                self.closest('.content').remove();
             }
         };
         var error = function (r) {

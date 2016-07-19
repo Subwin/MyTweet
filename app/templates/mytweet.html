@@ -5,6 +5,24 @@
     <meta charset="UTF-8">
 {% block head %}
     {{ super() }}
+{#    <script>#}
+{#    var mytweet_t=(`#}
+{#          <br>#}
+{#            <div>#}
+{#                <p class="lead">#}
+{#                    <a href="#${ url_for('controllers.other_tweet_view', username=t.user.username) }">${ t.user.username }</a>#}
+{#                </p>#}
+{#                <p><span class="glyphicon glyphicon-time"></span> ${ t.created_time }</p>#}
+{#                <hr>#}
+{#                <div>#}
+{#                    ${ t.content }#}
+{#                    <a href="/tweet/update/${t.id}">编辑</a>#}
+{#                    <button class="button-delete" data-id="${ t.id }">删除</button>#}
+{#                    <a href="/tweet/comments/${ t.id }"><h4>评论(${ t.comments|length })</h4></a>#}
+{#                </div>#}
+{#                <hr>#}
+{#            </div>`)#}
+{#    </script>#}
     <script src="/static/js/jquery.tmpl.min.js"></script>
     <script src="/static/js/weibo.js"></script>
     <script src="/static/js/action.js"></script>
@@ -35,20 +53,21 @@
     </h1>
     {% for t in all_tweets %}
     <!-- First Blog Post -->
+    <div class="content">
     <br>
-    <p class="lead">
-        <a href="{{ url_for('controllers.other_tweet_view', username=t.user.username) }}">{{ t.user.username }}</a>
-    </p>
-    <p><span class="glyphicon glyphicon-time"></span> {{ t.created_time }}</p>
-    <hr>
-    <div>
-        {{ t.content }}
-        <a href="/tweet/update/{{t.id}}">编辑</a>
-        <button class="button-delete" data-id="{{ t.id }}">删除</button>
-        <a href="/tweet/comments/{{ t.id }}"><h4>评论({{ t.comments|length }})</h4></a>
+        <p class="lead">
+            <a href="{{ url_for('controllers.other_tweet_view', username=t.user.username) }}">{{ t.user.username }}</a>
+        </p>
+        <p><span class="glyphicon glyphicon-time"></span> {{ t.created_time }}</p>
+        <hr>
+        <div>
+            {{ t.content }}
+            <a href="/tweet/update/{{t.id}}">编辑</a>
+            <button class="button-delete" data-id="{{ t.id }}">删除</button>
+            <a href="/tweet/comments/{{ t.id }}"><h4>评论({{ t.comments|length }})</h4></a>
+        </div>
+        <hr>
     </div>
-{#    <a class="btn btn-primary" href="{{ url_for('controllers.other_tweet_view', username=all_tweets[0].user.username) }}">看看他的微博 <span class="glyphicon glyphicon-chevron-right"></span></a>#}
-    <hr>
     {% endfor %}
     <!-- Second Blog Post -->
 
@@ -63,7 +82,7 @@
 {#            <a href="#">Older &rarr;</a>#}
 {#        </li>#}
 {#    </ul>#}
-    {% endblock %}
+{% endblock %}
 
     {% block sidebar %}
         {{ super() }}
