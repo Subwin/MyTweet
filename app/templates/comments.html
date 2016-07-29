@@ -7,14 +7,60 @@
     <script src="/static/js/jquery.tmpl.min.js"></script>
     <script src="/static/js/weibo.js"></script>
     <script src="/static/js/action.js"></script>
-    <script id="id-template-tweet" type="text/x-jquery-tmpl">
-            <p>
-            ${ content }
-            ${ created_time }
-            </p>
-    </script>
     <script>
+        var commentTemplate = function (comment) {
+            log('debug tweet', comment);
+            var c = comment;
+            var username = c.username;
+            var content = c.content;
+            var created_time = c.created_time;
+            var othertweet_view_url = c.othertweet_view_url;
+            var temp = `
+                <div class="id-one-comment">
+                    <p class="comment">
+                        <a href="${othertweet_view_url}">${username}</a>
+                        于<span class="glyphicon glyphicon-time">${created_time}说：</span>
+                    </p>
+    {#                <hr>#}
+    {#                <img class="img-responsive" src="#" alt="">#}
+                    <p><h4>${content}</h4></p>
+                    <hr>
+                </div>
+            `;
+            return temp;
+        };
+
+        var insertComments = function (Comments) {
+{#            for(var i=Comments.length-1; i>-1; i--){#}
+            for(var i=0; i<Comments.length; i++){
+                var Comment = Comments[i];
+                var t = commentTemplate(Comment);
+                $('#id-comment-title').after(t);
+            }
+        };
+{#        明天：把时间格式改了，#}
+{#        把图片功能加了，#}
+{#        灌10个假用户，#}
+{#        灌100条假数据，#}
+
+        var loadComments = function () {
+            var form = {
+                'id':$("#id-content-comment").data('id')
+            };
+            weibo.get_comments(form, function (r) {
+                log('tweets get',r.success);
+                if(r.success){
+                    var Comments = r.data;
+                    insertComments(Comments);
+                }else{
+                    log(r.message);
+                }
+            })
+        };
+    
+    
         $(document).ready(function(){
+            loadComments();
             bindAddCommentAction();
         });
     </script>
@@ -46,13 +92,6 @@
         <button type="button" id="id-button-add" class="btn btn-primary">提交评论</button>
     </div>
     <h3 id="id-comment-title">所有评论：</h3>
-    {% for c in comments %}
-        <p>
-            {{ c.user.username }}
-            {{ c.content }}
-            {{ c.created_time }}
-        </p>
-    {% endfor %}
 
 
     <!-- Pager -->

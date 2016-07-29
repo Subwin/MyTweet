@@ -5,7 +5,7 @@
 //tweet
     
     
-var bindAddTweetAction = function (after_id) {
+var bindAddTweetAction = function (after) {
     $('#id-button-add').on('click', function () {
         var self = $(this);
         var content = $('#id-input-content').val();
@@ -15,17 +15,14 @@ var bindAddTweetAction = function (after_id) {
         var response = function (r) {
             if (r.success) {
                 log('add success', r);
-                // $('#id-template-tweet').tmpl(r.data).insertAfter(after_id);
                 $('#id-input-content').val("");
                 var t = tweetTemplate(r.data)
-                $(".page-header").after(t);
+                $(after).after(t);
             }else{
                 log('add fail', r)
             }
         };
         weibo.push_tweet(form, response);
-        // log('remove success');
-        // loadTweets();
     });
 };
 
@@ -65,7 +62,8 @@ var bindAddCommentAction = function () {
         var response = function (r) {
             if (r.success) {
                 log('add success', r);
-                $('#id-template-tweet').tmpl(r.data).insertAfter('#id-comment-title');
+                t = commentTemplate(r.data)
+                $('#id-comment-title').after(t);
                 $('#id-input-content').val("");
             }else{
                 log('err, ', err);
@@ -87,7 +85,7 @@ var bindDeleteAction = function() {
             console.log(r);
             if (r.success) {
                 log(r.message);
-                self.closest('.content').remove();
+                self.closest('.id-one-tweet').remove();
             }else{
                 log('err, ', r);
             }

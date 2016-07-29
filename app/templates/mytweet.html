@@ -8,35 +8,72 @@
     <script src="/static/js/jquery.tmpl.min.js"></script>
     <script src="/static/js/weibo.js"></script>
     <script src="/static/js/action.js"></script>
-    <script id="id-template-tweet" type="text/x-jquery-tmpl">
-         <p>
-            ${ content } : ${ created_time }
-            <a href="tweet/update/${ id }">编辑</a>
-            <button class="button-delete" data-id="${ id }" >删除</button>
-         </p>
+    <script>
+        var tweetTemplate = function (tweet) {
+            log('debug tweet', tweet);
+            var t = tweet;
+            var id = t.id
+            var username = t.username;
+            var content = t.content;
+            var created_time = t.created_time;
+            var comments_lenth = t.comments_lenth;
+            var othertweet_view_url = t.othertweet_view_url;
+            var tweet_comment_url = t.tweet_comment_url;
+            var temp = `
+                <div class="id-one-tweet">
+                    <p class="lead">
+                        <a href="${othertweet_view_url}">${username}</a>
+                    </p>
+                    <p><span class="glyphicon glyphicon-time"></span>${created_time}</p>
+    {#                <hr>#}
+    {#                <img class="img-responsive" src="#" alt="">#}
+                    <hr>
+                    <p>
+                        ${content}
+                        <a href="/tweet/update/${id}">编辑</a>
+                        <button class="button-delete" data-id="${ id }" >删除</button>
+                    </p>
+                    <br><span><a class="id-commmets" href="${tweet_comment_url}">评论(${comments_lenth})</a></span>
+                    <hr>
+                </div>
+            `;
+            return temp;
+        };
+
+
+        var insertTweets = function (tweets) {
+            for(var i=tweets.length-1; i>-1; i--){
+                var tweet = tweets[i];
+{#                log('tweet ', tweet);#}
+                var t = tweetTemplate(tweet);
+{#                log('temp', t);#}
+                $('.col-md-8').append(t);
+{#                log('append success');#}
+            }
+        };
+
+
+        var loadUserTweets = function () {
+            form = {
+                'username': $(".well").data('username')
+            };
+            log('debug form',form);
+            weibo.get_user_tweets(form, function (r) {
+                log('tweets get',r.success);
+                if(r.success){
+                    var tweets = r.data;
+                    insertTweets(tweets);
+                }else{
+                    log(r.message);
+                }
+            })
+        }
     </script>
-    {#    <script>#}
-{#    var mytweet_t=(`#}
-{#          <br>#}
-{#            <div>#}
-{#                <p class="lead">#}
-{#                    <a href="#${ url_for('controllers.other_tweet_view', username=t.user.username) }">${ t.user.username }</a>#}
-{#                </p>#}
-{#                <p><span class="glyphicon glyphicon-time"></span> ${ t.created_time }</p>#}
-{#                <hr>#}
-{#                <div>#}
-{#                    ${ t.content }#}
-{#                    <a href="/tweet/update/${t.id}">编辑</a>#}
-{#                    <button class="button-delete" data-id="${ t.id }">删除</button>#}
-{#                    <a href="/tweet/comments/${ t.id }"><h4>评论(${ t.comments|length })</h4></a>#}
-{#                </div>#}
-{#                <hr>#}
-{#            </div>`)#}
-{#    </script>#}
     <script>
         $(document).ready(function(){
+            loadUserTweets();
             bindDeleteAction();
-            bindAddTweetAction('#id-button-add');
+            bindAddTweetAction('.page-header');
         });
     </script>
     {% block title %}
@@ -51,24 +88,24 @@
         我的主页
         <small>我的微博</small>
     </h1>
-    {% for t in all_tweets %}
-    <!-- First Blog Post -->
-    <div class="content">
-    <br>
-        <p class="lead">
-            <a href="{{ url_for('controllers.other_tweet_view', username=t.user.username) }}">{{ t.user.username }}</a>
-        </p>
-        <p><span class="glyphicon glyphicon-time"></span> {{ t.created_time }}</p>
-        <hr>
-        <div>
-            {{ t.content }}
-            <a href="/tweet/update/{{t.id}}">编辑</a>
-            <button class="button-delete" data-id="{{ t.id }}">删除</button>
-            <a href="/tweet/comments/{{ t.id }}"><h4>评论({{ t.comments|length }})</h4></a>
-        </div>
-        <hr>
-    </div>
-    {% endfor %}
+{#    {% for t in all_tweets %}#}
+{#    <!-- First Blog Post -->#}
+{#    <div class="content">#}
+{#    <br>#}
+{#        <p class="lead">#}
+{#            <a href="{{ url_for('controllers.other_tweet_view', username=t.user.username) }}">{{ t.user.username }}</a>#}
+{#        </p>#}
+{#        <p><span class="glyphicon glyphicon-time"></span> {{ t.created_time }}</p>#}
+{#        <hr>#}
+{#        <div>#}
+{#            {{ t.content }}#}
+{#            <a href="/tweet/update/{{t.id}}">编辑</a>#}
+{#            <button class="button-delete" data-id="{{ t.id }}">删除</button>#}
+{#            <a href="/tweet/comments/{{ t.id }}"><h4>评论({{ t.comments|length }})</h4></a>#}
+{#        </div>#}
+{#        <hr>#}
+{#    </div>#}
+{#    {% endfor %}#}
     <!-- Second Blog Post -->
 
 

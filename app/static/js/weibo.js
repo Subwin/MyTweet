@@ -105,3 +105,16 @@ weibo.get_all_tweets = function (response) {
     var url = '/api/tweets';
     this.get(url, response)
 };
+
+weibo.get_user_tweets = function (form, response) {
+    var username = form['username']
+    var url = '/api/tweets/' + username;
+    this.get(url, response)
+};
+
+weibo.get_comments = function (form, response){
+    var tweet_id = form['id'];
+    var url = '/api/comments/' + tweet_id;
+    this.get(url, response)
+};
+

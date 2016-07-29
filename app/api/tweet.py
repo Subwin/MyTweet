@@ -1,4 +1,5 @@
 from ..models import Tweet
+from ..models import User
 from . import api
 from . import current_user
 from flask import request
@@ -17,8 +18,10 @@ def add_extra(obj):
     )
     res.update(extra)
     return res
+
+
 '''
-GET /api/products
+GET /api/tweets
 [
 {
     'username': '111',
@@ -33,13 +36,24 @@ GET /api/products
 
 
 @api.route('/tweets', methods=['GET'])
-def all_tweets():
+def get_all_tweets():
     ts = Tweet.query.all()
     r = dict(
         success=True,
         data=[add_extra(t) for t in ts],
     )
     # print('api r', r)
+    return jsonify(r)
+
+
+@api.route('/tweets/<username>', methods=['GET'])
+def get_user_tweets(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    ts = user.tweets
+    r = dict(
+        success=True,
+        data=[add_extra(t) for t in ts],
+    )
     return jsonify(r)
 
 

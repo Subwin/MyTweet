@@ -70,7 +70,7 @@
             <div class="col-md-4 sidebar_affix" >
 
                 {% block sidebar %}
-                <div class="well">
+                <div class="well" data-username = "{{ user.username }}">
                     <h3>您的用户名：{{ user.username }}</h3>
                     <h4>关注用户：0(todo)</h4>
                     <h4>粉丝：0(todo)</h4>
