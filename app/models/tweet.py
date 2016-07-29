@@ -30,6 +30,7 @@ class Tweet(db.Model, ReprMixin, Update):
     def json(self):
         self.id
         extra = dict(
+            comments_lenth = len(self.comments),
             user_id=self.user_id,
             type = 'tweet',
         )
@@ -40,5 +41,6 @@ class Tweet(db.Model, ReprMixin, Update):
     def blacklist(self):
         b = [
             '_sa_instance_state',
+            'comments',
         ]
         return b

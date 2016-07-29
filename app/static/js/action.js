@@ -12,18 +12,20 @@ var bindAddTweetAction = function (after_id) {
         var form = {
             'content': content
         };
-        var success = function (r) {
+        var response = function (r) {
             if (r.success) {
                 log('add success', r);
-                $('#id-template-tweet').tmpl(r.data).insertAfter(after_id);
-                // $('.page-header').append(mytweet_t)
+                // $('#id-template-tweet').tmpl(r.data).insertAfter(after_id);
                 $('#id-input-content').val("");
+                var t = tweetTemplate(r.data)
+                $(".page-header").after(t);
+            }else{
+                log('add fail', r)
             }
         };
-        var error = function (err) {
-            log('err, ', err);
-        };
-        weibo.push_tweet(form, success, error);
+        weibo.push_tweet(form, response);
+        // log('remove success');
+        // loadTweets();
     });
 };
 
@@ -37,17 +39,16 @@ var bindUpdateTweetAction = function () {
             'content': content,
             'id':tweet_id
         };
-        var success = function (r) {
+        var response = function (r) {
             if (r.success) {
                 log('update success', r);
                 $('#id-input-content').val("");
                 window.location.href = r.next;
+            }else{
+                log('err, ', err);
             }
         };
-        var error = function (err) {
-            log('err, ', err);
-        };
-        weibo.update_tweet(form, success, error);
+        weibo.update_tweet(form, response);
     });
 };
 
@@ -61,17 +62,16 @@ var bindAddCommentAction = function () {
             'content': content,
             'id': id
         };
-        var success = function (r) {
+        var response = function (r) {
             if (r.success) {
                 log('add success', r);
                 $('#id-template-tweet').tmpl(r.data).insertAfter('#id-comment-title');
                 $('#id-input-content').val("");
+            }else{
+                log('err, ', err);
             }
         };
-        var error = function (err) {
-            log('err, ', err);
-        };
-        weibo.push_comment(form, success, error);
+        weibo.push_comment(form, response);
     });
 };
 
@@ -82,18 +82,17 @@ var bindDeleteAction = function() {
         var tweet_id = this.dataset.id;
         var form = {
             'id': tweet_id
-        }
-        var success = function (r) {
+        };
+        var response = function (r) {
             console.log(r);
             if (r.success) {
                 log(r.message);
                 self.closest('.content').remove();
+            }else{
+                log('err, ', r);
             }
         };
-        var error = function (r) {
-            log('err, ', r);
-        };
-        weibo.delete(form, success, error)
+        weibo.delete(form, response)
     });
 };
 

@@ -6,15 +6,60 @@
     <script src="/static/js/jquery.tmpl.min.js"></script>
     <script src="/static/js/weibo.js"></script>
     <script src="/static/js/action.js"></script>
-    <script id="id-template-tweet" type="text/x-jquery-tmpl">
-         <p>
-              ${ content }
-              ${ created_time }
-         </p>
-    </script>
     <script>
+        var tweetTemplate = function (tweet) {
+            log('debug tweet', tweet)
+            var t = tweet;
+            var username = t.username;
+            var content = t.content;
+            var created_time = t.created_time;
+            var comments_lenth = t.comments_lenth;
+            var othertweet_view_url = t.othertweet_view_url;
+            var tweet_comment_url = t.tweet_comment_url;
+            var temp = `
+                <div class="id-one-tweet">
+                    <p class="lead">
+                        <a href="${othertweet_view_url}">${username}</a>
+                    </p>
+                    <p><span class="glyphicon glyphicon-time"></span>${created_time}</p>
+    {#                <hr>#}
+    {#                <img class="img-responsive" src="#" alt="">#}
+                    <hr>
+                    <p>${content}</p>
+                    <span><a class="id-commmets" href="${tweet_comment_url}">评论(${comments_lenth})</a></span><hr>
+                    <a class="btn btn-primary" href="${othertweet_view_url}">看看他的其他微博<span class="glyphicon glyphicon-chevron-right"></span></a>
+                    <hr>
+                </div>
+            `;
+            return temp;
+        };
+
+        var insertTweets = function (tweets) {
+            for(var i=tweets.length-1; i>-1; i--){
+                var tweet = tweets[i];
+{#                log('tweet ', tweet);#}
+                var t = tweetTemplate(tweet);
+{#                log('temp', t);#}
+                $('.col-md-8').append(t);
+{#                log('append success');#}
+            }
+        };
+
+        var loadTweets = function () {
+            weibo.get_all_tweets(function (r) {
+                log('tweets get',r.success);
+                if(r.success){
+                    var tweets = r.data;
+                    insertTweets(tweets);
+                }else{
+                    log(r.message);
+                }
+            })
+        };
+
 
         $(document).ready(function(){
+            loadTweets();
             bindAddTweetAction('#id-tweet-title');
         });
     </script>
@@ -29,21 +74,21 @@
         首页
         <small>所有人的微博</small>
     </h1>
-    {% for t in all_tweets %}
-    <!-- First Blog Post -->
-    <br>
-    <p class="lead">
-        <a href="{{ url_for('controllers.other_tweet_view', username=t.user.username) }}">{{ t.user.username }}</a>
-    </p>
-    <p><span class="glyphicon glyphicon-time"></span> {{ t.created_time }}</p>
-    <hr>
-    <div>
-        <h3>{{ t.content }}</h3>
-        <a href="/tweet/comments/{{ t.id }}"><h4>评论({{ t.comments|length }})</h4></a>
-    </div>
+{#    {% for t in all_tweets %}#}
+{#    <!-- First Blog Post -->#}
+{#    <br>#}
+{#    <p class="lead">#}
+{#        <a href="{{ url_for('controllers.other_tweet_view', username=t.user.username) }}">{{ t.user.username }}</a>#}
+{#    </p>#}
+{#    <p><span class="glyphicon glyphicon-time"></span> {{ t.created_time }}</p>#}
+{#    <hr>#}
+{#    <div>#}
+{#        <h3>{{ t.content }}</h3>#}
+{#        <a href="/tweet/comments/{{ t.id }}"><h4>评论({{ t.comments|length }})</h4></a>#}
+{#    </div>#}
 {#    <a class="btn btn-primary" href="{{ url_for('controllers.other_tweet_view', username=all_tweets[0].user.username) }}">看看他的微博 <span class="glyphicon glyphicon-chevron-right"></span></a>#}
-    <hr>
-    {% endfor %}
+{#    <hr>#}
+{#    {% endfor %}#}
     <!-- Second Blog Post -->
 
 

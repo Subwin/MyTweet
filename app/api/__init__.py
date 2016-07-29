@@ -29,5 +29,6 @@ def login_required(f):
         return f(*args, **kwargs)
     return function
 
-from . import tweet  #这一句为什么要放在最后？
+
+from . import tweet
 from . import comment

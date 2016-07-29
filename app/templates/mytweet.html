@@ -5,7 +5,17 @@
     <meta charset="UTF-8">
 {% block head %}
     {{ super() }}
-{#    <script>#}
+    <script src="/static/js/jquery.tmpl.min.js"></script>
+    <script src="/static/js/weibo.js"></script>
+    <script src="/static/js/action.js"></script>
+    <script id="id-template-tweet" type="text/x-jquery-tmpl">
+         <p>
+            ${ content } : ${ created_time }
+            <a href="tweet/update/${ id }">编辑</a>
+            <button class="button-delete" data-id="${ id }" >删除</button>
+         </p>
+    </script>
+    {#    <script>#}
 {#    var mytweet_t=(`#}
 {#          <br>#}
 {#            <div>#}
@@ -23,16 +33,6 @@
 {#                <hr>#}
 {#            </div>`)#}
 {#    </script>#}
-    <script src="/static/js/jquery.tmpl.min.js"></script>
-    <script src="/static/js/weibo.js"></script>
-    <script src="/static/js/action.js"></script>
-    <script id="id-template-tweet" type="text/x-jquery-tmpl">
-         <p>
-            ${ content } : ${ created_time }
-            <a href="tweet/update/${ id }">编辑</a>
-            <button class="button-delete" data-id="${ id }" >删除</button>
-         </p>
-    </script>
     <script>
         $(document).ready(function(){
             bindDeleteAction();
