@@ -15,11 +15,12 @@
             var content = c.content;
             var created_time = c.created_time;
             var othertweet_view_url = c.othertweet_view_url;
+            var parsed_time = longTimeAgo(created_time);
             var temp = `
                 <div class="id-one-comment">
                     <p class="comment">
                         <a href="${othertweet_view_url}">${username}</a>
-                        于<span class="glyphicon glyphicon-time">${created_time}说：</span>
+                        于<time class="glyphicon glyphicon-time" data-time="${created_time}">${parsed_time}</time>说：
                     </p>
     {#                <hr>#}
     {#                <img class="img-responsive" src="#" alt="">#}
@@ -60,6 +61,12 @@
     
     
         $(document).ready(function(){
+            var div = $("time");
+            var unixTime = div.data('time');
+{#            log('debug unixtime', unixTime);#}
+            var time = longTimeAgo(unixTime);
+{#            log('debug time', time);#}
+            div.text(time);
             loadComments();
             bindAddCommentAction();
         });
@@ -78,9 +85,9 @@
     </h1>
     <p class="lead" id="id-content-comment" data-id="{{ one_tweet.id }}">
         <a href="{{ url_for('controllers.other_tweet_view', username=one_tweet.user.username) }}">{{ one_tweet.user.username }}</a>
+        于<time class="unixtime" id='id-unixtime' data-time="{{ one_tweet.created_time }}"></time>说：
     </p>
-    <p><span class="glyphicon glyphicon-time"></span> {{ one_tweet.created_time }}</p>
-    <hr>
+{#    <hr>#}
     <div>
         <h3>{{ one_tweet.content }}</h3>
     </div>

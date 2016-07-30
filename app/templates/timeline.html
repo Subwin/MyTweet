@@ -8,7 +8,7 @@
     <script src="/static/js/action.js"></script>
     <script>
         var tweetTemplate = function (tweet) {
-            log('debug tweet', tweet)
+            log('debug tweet', tweet);
             var t = tweet;
             var username = t.username;
             var content = t.content;
@@ -16,17 +16,22 @@
             var comments_lenth = t.comments_lenth;
             var othertweet_view_url = t.othertweet_view_url;
             var tweet_comment_url = t.tweet_comment_url;
+            var parsed_time = longTimeAgo(created_time)
             var temp = `
                 <div class="id-one-tweet">
                     <p class="lead">
                         <a href="${othertweet_view_url}">${username}</a>
+                        于<time data-time="${created_time}">${parsed_time}</time>说：
                     </p>
-                    <p><span class="glyphicon glyphicon-time"></span>${created_time}</p>
+
+{#                    <time data-time="1468735815">13 天前</time>#}
     {#                <hr>#}
     {#                <img class="img-responsive" src="#" alt="">#}
-                    <hr>
-                    <p>${content}</p>
-                    <span><a class="id-commmets" href="${tweet_comment_url}">评论(${comments_lenth})</a></span><hr>
+{#                    <hr>#}
+                    <h3><p>${content}</p></h3>
+                    <span><a class="id-commmets" href="${tweet_comment_url}">评论(${comments_lenth})</a></span><br>
+                    <br>
+{#                    <hr>#}
                     <a class="btn btn-primary" href="${othertweet_view_url}">看看他的其他微博<span class="glyphicon glyphicon-chevron-right"></span></a>
                     <hr>
                 </div>

@@ -19,21 +19,23 @@
             var comments_lenth = t.comments_lenth;
             var othertweet_view_url = t.othertweet_view_url;
             var tweet_comment_url = t.tweet_comment_url;
+            var parsed_time = longTimeAgo(created_time);
             var temp = `
                 <div class="id-one-tweet">
                     <p class="lead">
-                        <a href="${othertweet_view_url}">${username}</a>
+{#                        <a href="${othertweet_view_url}">${username}</a>#}
+                        我于<time data-time="${created_time}">${parsed_time}</time>说：
+
                     </p>
-                    <p><span class="glyphicon glyphicon-time"></span>${created_time}</p>
     {#                <hr>#}
     {#                <img class="img-responsive" src="#" alt="">#}
-                    <hr>
+{#                    <br>#}
                     <p>
-                        ${content}
+                        <h3>${content}</h3>
                         <a href="/tweet/update/${id}">编辑</a>
                         <button class="button-delete" data-id="${ id }" >删除</button>
                     </p>
-                    <br><span><a class="id-commmets" href="${tweet_comment_url}">评论(${comments_lenth})</a></span>
+                    <span><a class="id-commmets" href="${tweet_comment_url}">查看评论(${comments_lenth})</a></span>
                     <hr>
                 </div>
             `;

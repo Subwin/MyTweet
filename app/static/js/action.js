@@ -4,7 +4,35 @@
 
 //tweet
     
-    
+var longTimeAgo = function(unixTime) {
+            var timeAgo = function(time, ago) {
+              return Math.round(time) + ago;
+            };
+            var past = parseInt(unixTime);
+            var now = Math.round(new Date().getTime() / 1000);
+            var ago = (now - past) / 60;
+            // log('time ago', e, past, now, ago);
+            var yet = 5;
+            var oneHour = 60;
+            var oneDay = oneHour * 24;
+            // var oneWeek = oneDay * 7;
+            var oneMonth = oneDay * 30;
+            var oneYear = oneMonth * 12;
+            var s = '';
+            if (ago < yet) {
+                s = '刚刚';
+            } else if (ago < oneHour) {
+                s = timeAgo(ago, '分钟前');
+            } else if (ago < oneDay) {
+                s = timeAgo(ago/oneHour, '小时前');
+            } else if (ago < oneMonth) {
+                s = timeAgo(ago / oneDay, '天前');
+            } else if (ago < oneYear) {
+                s = timeAgo(ago / oneMonth, '月前');
+            }
+            return s;
+            };
+
 var bindAddTweetAction = function (after) {
     $('#id-button-add').on('click', function () {
         var self = $(this);
@@ -16,7 +44,8 @@ var bindAddTweetAction = function (after) {
             if (r.success) {
                 log('add success', r);
                 $('#id-input-content').val("");
-                var t = tweetTemplate(r.data)
+                var t = tweetTemplate(r.data);
+                // longTimeAgo()
                 $(after).after(t);
             }else{
                 log('add fail', r)
