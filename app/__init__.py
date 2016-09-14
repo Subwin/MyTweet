@@ -14,8 +14,6 @@ def init_app():
     # 获取 app 的实例
     app = Flask(__name__)
     app.secret_key = 'random string'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-    app.secret_key = 'random string'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///{}'.format(db_path)
     # 这一行 加了就没 warning
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True

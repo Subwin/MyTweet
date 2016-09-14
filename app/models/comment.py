@@ -23,7 +23,7 @@ class Comment(db.Model, ReprMixin, Update):
         extra = dict(
             post_user_id=self.post_user_id,
             comment_tweet_id=self.comment_tweet_id,
-            type = 'comment',
+            type='comment',
         )
         d = {k:v for k,v in self.__dict__.items() if k not in self.blacklist()}
         d.update(extra)
